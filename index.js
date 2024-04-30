@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const { ObjectId } = require('mongodb');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -27,7 +28,7 @@ async function run() {
         const tasks = db.collection("tasks")
 
         // User Registration
-        app.post('/api/v1/register', async (req, res) => {
+        app.post('/api/v1/auth/register', async (req, res) => {
             const { name, email, password } = req.body;
 
             // Check if email already exists
@@ -52,7 +53,7 @@ async function run() {
         });
 
         // User Login
-        app.post('/api/v1/login', async (req, res) => {
+        app.post('/api/v1/auth/login', async (req, res) => {
             const { email, password } = req.body;
 
            try {
@@ -88,13 +89,13 @@ async function run() {
         // ==============================================================
 
 
-// create a task post
+// create a task
 app.post('/api/v1/tasks', async(req, res) => {
     const newTask = req.body
 
     try {
         const result  = await tasks.insertOne(newTask)
-        res.status(201).json(result)
+        res.status(201).json(  result)
     } catch (error) {
         console.log(error)
         res.status(500).json({error: "Internal server error"})
@@ -102,7 +103,7 @@ app.post('/api/v1/tasks', async(req, res) => {
     }
 })
 
-// get all tasks post  
+// get all tasks  
 
 app.get('/api/v1/tasks', async(req, res) => {
 try {
@@ -114,7 +115,7 @@ try {
         }
 })
 
- // get single task post 
+ // get single task 
 app.get('/api/v1/tasks/:id', async(req, res) => {
 const taskId = req.params.id
 
@@ -122,7 +123,7 @@ try {
 const result = await tasks.findOne({_id: new ObjectId(taskId)})
 res.status(200).json({result})
 } catch (error) {
-console.log("Error fetching supply", error)
+console.log("Error fetching task", error)
 res.status(500).json({error: "Internal server error"})
 }
 })
