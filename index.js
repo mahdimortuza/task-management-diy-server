@@ -10,7 +10,10 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000', 
+    credentials: true, 
+  }));
 app.use(express.json());
 
 // MongoDB Connection URL
@@ -28,7 +31,7 @@ async function run() {
         const tasks = db.collection("tasks")
 
         // User Registration
-        app.post('/api/v1/auth/register', async (req, res) => {
+        app.post('/api/v1/user/create-user', async (req, res) => {
             const { name, email, password } = req.body;
 
             // Check if email already exists
