@@ -11,7 +11,7 @@ const port = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-    origin: 'http://localhost:3000', 
+    origin: 'https://diy-task-manager.vercel.app', 
     credentials: true, 
   }));
 app.use(express.json());
@@ -121,7 +121,7 @@ try {
  // get single task 
 app.get('/api/v1/tasks/:id', async(req, res) => {
 const taskId = req.params.id
-
+// console.log(taskId)
 try {
 const result = await tasks.findOne({_id: new ObjectId(taskId)})
 res.status(200).json({result})
